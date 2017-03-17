@@ -95,6 +95,65 @@ def re_repetition(text, pattens=None):
         'ab{3}?',   # a followed by three b
         'ab{2,3}?', # a followed by two to three b
         ]
+
+    # 字符集合
+    [ '[ab]',    # either a or b
+        'a[ab]+',  # a followed by one or more a or b
+        'a[ab]+?', # a followed by one or more a or b, not greedy
+        ]
+
+    # 排除：^
+    [ '[^-. ]+',  # sequences without -, ., or space
+        ]
+
+    #
+    [ '[a-z]+',      # sequences of lower case letters
+        '[A-Z]+',      # sequences of upper case letters
+        '[a-zA-Z]+',   # sequences of lower or upper case letters
+        '[A-Z][a-z]+', # one upper case letter followed by lower case letters
+        ]
+
+    # .
+    [ 'a.',   # a followed by any one character
+        'b.',   # b followed by any one character
+        'a.*b', # a followed by anything, ending in b
+        'a.*?b', # a followed by anything, ending in b
+        ]
+
+    # 转义码
+    \d	a digit
+    \D	a non-digit
+    \s	whitespace (tab, space, newline, etc.)
+    \S	non-whitespace
+    \w	alphanumeric
+    \W	non-alphanumeric
+    [ r'\d+', # sequence of digits
+        r'\D+', # sequence of non-digits
+        r'\s+', # sequence of whitespace
+        r'\S+', # sequence of non-whitespace
+        r'\w+', # alphanumeric characters
+        r'\W+', # non-alphanumeric
+        ]
+
+    # 类似转义码的字符匹配
+    [r'\\d\+',
+       r'\\D\+',
+       r'\\s\+',
+       r'\\S\+',
+       r'\\w\+',
+       r'\\W\+',
+       ]
+
+    # Anchoring （锚定）
+    [r'^\w+',  # word at start of string
+       r'\A\w+',  # word at start of string
+       r'\w+\S*$',  # word at end of string, with optional punctuation
+       r'\w+\S*\Z',  # word at end of string, with optional punctuation
+       r'\w*t\w*',  # word containing 't'
+       r'\bt\w+',  # 't' at start of word
+       r'\w+t\b',  # 't' at end of word
+       r'\Bt\B',  # 't', not start or end of word
+       ]
     :param text:
     :param pattens:
     :return:
@@ -105,9 +164,13 @@ def re_repetition(text, pattens=None):
 
 
 if __name__ == '__main__':
-    re_repetition('abbaaabbbbaaaaa', ['ab*?',  # a followed by zero or more b
-                                      'ab+?',  # a followed by one or more b
-                                      'ab??',  # a followed by zero or one b
-                                      'ab{3}?',  # a followed by three b
-                                      'ab{2,3}?',  # a followed by two to three b
-                                      ])
+    re_repetition('This is some text -- with punctuation.',
+                  [r'^\w+',  # word at start of string
+                   r'\A\w+',  # word at start of string
+                   r'\w+\S*$',  # word at end of string, with optional punctuation
+                   r'\w+\S*\Z',  # word at end of string, with optional punctuation
+                   r'\w*t\w*',  # word containing 't'
+                   r'\bt\w+',  # 't' at start of word
+                   r'\w+t\b',  # 't' at end of word
+                   r'\Bt\B',  # 't', not start or end of word
+                   ])
